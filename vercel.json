@@ -2,7 +2,6 @@
   "buildCommand": "bun run build",
   "installCommand": "bun install",
   "devCommand": "bun dev",
-  "outputDirectory": "public",
   "rewrites": [
     { "source": "/(.*)", "destination": "/src/index.ts" }
   ],
