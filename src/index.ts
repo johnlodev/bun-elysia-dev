@@ -2,13 +2,15 @@ import { Elysia, t } from "elysia";
 import { db } from "./db";
 import { todos } from "./schema";
 import { eq } from "drizzle-orm";
-
-// 宣告全域 Bun 變數，避免 TS 報錯
-declare const Bun: any;
+// 引入我們剛建立的 HTML 字串 (這是為了讓 Vercel 部署能 100% 成功的關鍵修正)
+import { indexHTML } from "./html";
 
 const app = new Elysia()
-  // 讓首頁指向靜態 HTML 檔案
-  .get("/", () => Bun.file("public/index.html"))
+  // 修正：將原本的 Bun.file 改為直接回傳 HTML 字串
+  // 這樣可以避免 Vercel 找不到檔案的問題
+  .get("/", () => new Response(indexHTML, {
+    headers: { 'Content-Type': 'text/html;charset=utf-8' }
+  }))
   
   // 取得所有代辦事項 (READ)
   .get("/todos", async () => {
@@ -104,12 +106,14 @@ const app = new Elysia()
         id: t.Numeric(),
       }),
     }
-  )
-  .listen(process.env.PORT || 3000);
+  ); // 注意這裡移除了 .listen()，改在下方判斷執行
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+// 本地開發時執行 (避免 Vercel 部署時重複監聽端口)
+if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'production') {
+    app.listen(process.env.PORT || 3000);
+    console.log(`🦊 Elysia is running at localhost:3000`);
+}
 
+// 補回您需要的型別匯出
 export type App = typeof app;
 export default app;
