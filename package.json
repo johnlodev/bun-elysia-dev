@@ -2,8 +2,7 @@
   "name": "bun-elysia-turso-demo",
   "version": "1.0.0",
   "scripts": {
-    "dev": "bun run --watch src/index.ts",
-    "//": "移除了 build 指令，避免 Vercel 誤判為靜態網站專案"
+    "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.6.0",
