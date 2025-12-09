@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "build": "echo 'Vercel build step completed'" 
+    "//": "移除了 build 指令，避免 Vercel 誤判為靜態網站專案"
   },
   "dependencies": {
     "@libsql/client": "^0.6.0",
