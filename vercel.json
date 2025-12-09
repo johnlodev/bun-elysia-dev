@@ -1,7 +1,5 @@
 {
-  "buildCommand": "bun run build",
   "installCommand": "bun install",
-  "devCommand": "bun dev",
   "rewrites": [
     { "source": "/(.*)", "destination": "/src/index.ts" }
   ],
