@@ -1,6 +1,4 @@
 {
-  "//": "移除 installCommand，讓 Vercel 自動偵測 Bun",
-  "//": "移除 buildCommand，避免觸發靜態建置流程",
   "rewrites": [
     { "source": "/(.*)", "destination": "/api/index.ts" }
   ],
