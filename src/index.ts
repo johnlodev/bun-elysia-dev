@@ -3,7 +3,7 @@ import { db } from "./db";
 import { todos } from "./schema";
 import { eq } from "drizzle-orm";
 
-// 宣告全域 Bun 變數
+// 宣告全域 Bun 變數，避免 TS 報錯
 declare const Bun: any;
 
 const app = new Elysia()
@@ -19,10 +19,13 @@ const app = new Elysia()
   .post(
     "/todos",
     async ({ body }) => {
+      // 強制型別斷言 (Type Assertion)，解決 TS2339 錯誤
+      const { content } = body as { content: string };
+      
       const newTodo = await db
         .insert(todos)
         .values({
-          content: body.content,
+          content: content,
         })
         .returning();
       return newTodo;
@@ -37,11 +40,15 @@ const app = new Elysia()
   .patch(
     "/todos/:id",
     async ({ params, body, set }) => {
-      const id = params.id;
+      // 解決 TS2769: 強制將 id 轉為數字，確保相容性
+      const id = Number(params.id);
+      
+      // 解決 TS2339: 強制型別斷言
+      const typedBody = body as { completed?: boolean; content?: string };
       
       const updateData: any = {};
-      if (body.completed !== undefined) updateData.completed = body.completed;
-      if (body.content !== undefined) updateData.content = body.content;
+      if (typedBody.completed !== undefined) updateData.completed = typedBody.completed;
+      if (typedBody.content !== undefined) updateData.content = typedBody.content;
 
       if (Object.keys(updateData).length === 0) {
          set.status = 400; // Bad Request
@@ -76,7 +83,9 @@ const app = new Elysia()
   .delete(
     "/todos/:id",
     async ({ params, set }) => {
-      const id = params.id;
+      // 強制轉為數字
+      const id = Number(params.id);
+      
       const deletedTodo = await db
         .delete(todos)
         .where(eq(todos.id, id))
@@ -102,6 +111,5 @@ console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
 );
 
-// 關鍵新增：為了 Vercel 部署，必須將 app 匯出
 export type App = typeof app;
 export default app;
