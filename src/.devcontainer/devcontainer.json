@@ -1,0 +1,37 @@
+{
+  "name": "Bun + Elysia 全端開發環境",
+  // 使用微軟官方的 TypeScript/Node 基底映像檔 (Debian based)
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
+
+  // 這裡是魔法所在：透過 Feature 機制自動安裝 Bun
+  "features": {
+    "ghcr.io/devcontainers/features/bun:1": {
+      "version": "latest"
+    }
+  },
+
+  // 客製化 VS Code 設定
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      },
+      // 自動幫你安裝好用的外掛
+      "extensions": [
+        "oven.bun-vscode",       // Bun 官方支援
+        "dbaeumer.vscode-eslint" // 檢查語法錯誤
+      ]
+    }
+  },
+
+  // 環境建立完成後，自動執行的指令
+  // 1. 安裝專案套件
+  // 2. 顯示歡迎訊息
+  "postCreateCommand": "bun install && echo '🎉 Bun 環境已準備就緒！可以開始寫 Code 了！'",
+
+  // 讓 Codespace 知道我們要用哪個 Port (Elysia 預設 3000)
+  "forwardPorts": [3000],
+  
+  // 以非 root 使用者執行 (安全性較高)
+  "remoteUser": "node"
+}

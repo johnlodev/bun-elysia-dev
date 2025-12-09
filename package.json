@@ -1,0 +1,24 @@
+{
+  "name": "bun-elysia-turso-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "build": "echo 'Vercel build step'"
+  },
+  "dependencies": {
+    "@libsql/client": "latest",
+    "drizzle-orm": "latest",
+    "elysia": "latest"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.4",
+    "bun-types": "latest",
+    "drizzle-kit": "latest",
+    "typescript": "latest"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
