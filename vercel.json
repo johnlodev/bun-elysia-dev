@@ -1,7 +1,7 @@
 {
   "installCommand": "bun install",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/src/index.ts" }
+    { "source": "/(.*)", "destination": "/api/index.ts" }
   ],
   "bunVersion": "1.x"
 }
